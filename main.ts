@@ -105,7 +105,7 @@ controller.moveSprite(mySprite)
 mySprite.setStayInScreen(true)
 mySprite.bottom = 120
 info.setLife(3)
-game.onUpdateInterval(750 - game.runtime() / 1000, function () {
+game.onUpdateInterval(500 - game.runtime() / 1000, function () {
     if (Math.percentChance(3)) {
         bigboi = sprites.create(img`
             .................111111111111111.................
