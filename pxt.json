@@ -1,5 +1,6 @@
 {
     "name": "Spillmaker demo - Bigboi ver",
+    "version": "0.0.1",
     "description": "",
     "dependencies": {
         "device": "*"
