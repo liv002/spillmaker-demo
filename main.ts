@@ -64,14 +64,6 @@ function createBigboi () {
     bigboi.setFlag(SpriteFlag.AutoDestroy, true)
     list.push(10)
 }
-controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (5 <= info.score()) {
-        mySprite.startEffect(effects.hearts, 2000)
-        music.play(music.melodyPlayable(music.powerUp), music.PlaybackMode.UntilDone)
-        info.changeScoreBy(5)
-        info.changeLifeBy(1)
-    }
-})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     projectile = sprites.createProjectileFromSprite(img`
         . . . . . . . . . . . . . . . . 
@@ -138,6 +130,11 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.boss, function (sprite, othe
         sprites.destroy(sprite)
     }
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite, effects.hearts, 500)
+    music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
+    info.changeLifeBy(1)
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite, effects.fire, 100)
     sprites.destroy(sprite)
@@ -150,6 +147,31 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     music.play(music.melodyPlayable(music.smallCrash), music.PlaybackMode.UntilDone)
     info.changeLifeBy(-1)
 })
+function spawnLife () {
+    repairPack = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . f f f . f f f . . . . 
+        . . . . f 2 2 2 f 2 2 2 f . . . 
+        . . . . f 2 2 2 2 2 1 2 f . . . 
+        . . . . f 2 2 2 2 2 2 2 f . . . 
+        . . . . . f 2 4 4 4 2 f . . . . 
+        . . . . . f f 4 4 4 f f . . . . 
+        . . . . . . f f 4 f f . . . . . 
+        . . . . . . . f f f . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Food)
+    speed = randint(50, 100) + game.runtime() / 1000
+    repairPack.setVelocity(0, speed)
+    repairPack.setPosition(randint(3, 150), 0)
+    repairPack.setFlag(SpriteFlag.AutoDestroy, true)
+}
+let repairPack: Sprite = null
 let bigboiHP = 0
 let speed = 0
 let asteroide: Sprite = null
@@ -185,6 +207,7 @@ mySprite.setStayInScreen(true)
 mySprite.bottom = 120
 info.setLife(3)
 list = []
+let missedAstroids = 10
 game.onUpdateInterval(100, function () {
     if (controller.A.isPressed() || controller.B.isPressed()) {
         mySprite.setImage(img`
@@ -265,6 +288,8 @@ game.onUpdateInterval(100, function () {
 game.onUpdateInterval(500 - game.runtime() / 1000, function () {
     if (Math.percentChance(3)) {
         createBigboi()
+    } else if (Math.percentChance(1)) {
+        spawnLife()
     } else {
         createAsteroid()
     }
