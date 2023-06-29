@@ -66,41 +66,81 @@ function createBigboi () {
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     projectile = sprites.createProjectileFromSprite(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . 2 . . . . . . . . 
-        . . . . . 2 2 2 2 . . . . . . . 
-        . . . . . 2 2 4 2 2 . . . . . . 
-        . . . . . 2 2 4 2 2 . . . . . . 
-        . . . . . 2 4 5 2 2 . . . . . . 
-        . . . . . 2 1 1 5 2 . . . . . . 
-        . . . . . 2 5 1 5 2 . . . . . . 
-        . . . . . 2 4 5 2 2 . . . . . . 
-        . . . . . 2 2 5 2 2 . . . . . . 
-        . . . . . . 2 4 2 . . . . . . . 
-        . . . . . . 2 4 2 . . . . . . . 
-        . . . . . . . 2 2 . . . . . . . 
-        . . . . . . . 2 . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
+        . . 2 . . 
+        2 2 2 2 . 
+        2 2 4 2 2 
+        2 2 4 2 2 
+        2 4 5 2 2 
+        2 1 1 5 2 
+        2 5 1 5 2 
+        2 4 5 2 2 
+        2 2 5 2 2 
+        . 2 4 2 . 
+        . 2 4 2 . 
+        . . 2 2 . 
+        . . 2 . . 
+        . . . . . 
+        . . . . . 
+        . . . . . 
         `, mySprite, 0, -150)
+    animation.runImageAnimation(
+    projectile,
+    [img`
+        . . 2 . . 
+        2 2 2 2 . 
+        2 2 4 2 2 
+        2 2 4 2 2 
+        2 4 5 2 2 
+        2 1 1 5 2 
+        2 5 1 5 2 
+        2 4 5 2 2 
+        2 2 5 2 2 
+        . 2 4 2 . 
+        . 2 4 2 . 
+        2 . 2 2 . 
+        2 . 2 . 2 
+        . 2 . 2 . 
+        . 2 2 2 . 
+        . . 2 . . 
+        `,img`
+        . . 2 . . 
+        . 2 2 2 2 
+        2 2 4 2 2 
+        2 2 4 2 2 
+        2 2 5 4 2 
+        2 5 1 1 2 
+        2 5 1 5 2 
+        2 2 5 4 2 
+        2 2 5 2 2 
+        . 2 4 2 . 
+        . 2 4 2 . 
+        . 2 2 . 2 
+        2 . 2 . 2 
+        . 2 . 2 . 
+        . 2 2 2 . 
+        . . 2 . . 
+        `],
+    50,
+    true
+    )
     music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
 })
 function createAsteroid () {
     asteroide = sprites.create(img`
         . . . . . . . . . . . . . . . . 
-        . . b b . . 1 1 1 1 1 . . . b . 
+        . . 1 b . . 1 1 1 1 1 . . . b . 
         . . b b . 1 b b b b b 1 . . . . 
         . . . . 1 b b b b b b b 1 . . . 
-        . . . 1 b b c b b b b b b 1 . . 
-        . . 1 b b b b b b c b b b b 1 . 
-        . . 1 b b b b b b b b b b b 1 . 
-        . . 1 b b c b b b b b b b b 1 . 
-        . . 1 b b c c b b b b b b b 1 . 
-        . . 1 b b b b b b b b c b b 1 . 
-        . . . 1 b b b b b b c c b 1 . . 
-        . . . . 1 b b b b b b b 1 . . . 
-        . . b b . 1 b b b b b 1 . . b . 
-        . . . b . . 1 1 1 1 1 . b b b . 
+        . . . 1 b b c b b b b b b b . . 
+        . . 1 b b b b b b c b b b b b . 
+        . . 1 b b b b b b b b b b b b . 
+        . . 1 b b c b b b b b b b b c . 
+        . . b b b c c b b b b b b b c . 
+        . . b b b b b b b b b c b c c . 
+        . . . c b b b b b b c c c c . . 
+        . . . . c b b b b b b c c . . . 
+        . . b c . c c c c c c c . . c . 
+        . . . c . . c c c c c . c c c . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.Enemy)
@@ -286,9 +326,9 @@ game.onUpdateInterval(100, function () {
     }
 })
 game.onUpdateInterval(500 - game.runtime() / 1000, function () {
-    if (Math.percentChance(3)) {
+    if (Math.percentChance(0)) {
         createBigboi()
-    } else if (Math.percentChance(1)) {
+    } else if (Math.percentChance(5)) {
         spawnLife()
     } else {
         createAsteroid()
