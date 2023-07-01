@@ -64,71 +64,83 @@ function createBigboi () {
     bigboi.setFlag(SpriteFlag.AutoDestroy, true)
     list.push(10)
 }
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    reloading = 1
+    mySprite.sayText("Reloading in progress", 2000, false)
+    mySprite.startEffect(effects.fountain, 2000)
+    pause(2000)
+    reloading = 0
+    magasin = 20
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (0 < magasin) {
-        projectile = sprites.createProjectileFromSprite(img`
-            . . 2 . . 
-            2 2 2 2 . 
-            2 2 4 2 2 
-            2 2 4 2 2 
-            2 4 5 2 2 
-            2 1 1 5 2 
-            2 5 1 5 2 
-            2 4 5 2 2 
-            2 2 5 2 2 
-            . 2 4 2 . 
-            . 2 4 2 . 
-            . . 2 2 . 
-            . . 2 . . 
-            . . . . . 
-            . . . . . 
-            . . . . . 
-            `, mySprite, 0, -150)
-        animation.runImageAnimation(
-        projectile,
-        [img`
-            . . 2 . . 
-            2 2 2 2 . 
-            2 2 4 2 2 
-            2 2 4 2 2 
-            2 4 5 2 2 
-            2 1 1 5 2 
-            2 5 1 5 2 
-            2 4 5 2 2 
-            2 2 5 2 2 
-            . 2 4 2 . 
-            . 2 4 2 . 
-            2 . 2 2 . 
-            2 . 2 . 2 
-            . 2 . 2 . 
-            . 2 2 2 . 
-            . . 2 . . 
-            `,img`
-            . . 2 . . 
-            . 2 2 2 2 
-            2 2 4 2 2 
-            2 2 4 2 2 
-            2 2 5 4 2 
-            2 5 1 1 2 
-            2 5 1 5 2 
-            2 2 5 4 2 
-            2 2 5 2 2 
-            . 2 4 2 . 
-            . 2 4 2 . 
-            . 2 2 . 2 
-            2 . 2 . 2 
-            . 2 . 2 . 
-            . 2 2 2 . 
-            . . 2 . . 
-            `],
-        50,
-        true
-        )
-        magasin += -1
-        mySprite.sayText(magasin, 100, false)
-        music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
+    if (1 == reloading) {
+    	
     } else {
-        mySprite.sayText("Press the \"B\" button to reload", 500, false)
+        if (0 < magasin) {
+            projectile = sprites.createProjectileFromSprite(img`
+                . . 2 . . 
+                2 2 2 2 . 
+                2 2 4 2 2 
+                2 2 4 2 2 
+                2 4 5 2 2 
+                2 1 1 5 2 
+                2 5 1 5 2 
+                2 4 5 2 2 
+                2 2 5 2 2 
+                . 2 4 2 . 
+                . 2 4 2 . 
+                . . 2 2 . 
+                . . 2 . . 
+                . . . . . 
+                . . . . . 
+                . . . . . 
+                `, mySprite, 0, -150)
+            animation.runImageAnimation(
+            projectile,
+            [img`
+                . . 2 . . 
+                2 2 2 2 . 
+                2 2 4 2 2 
+                2 2 4 2 2 
+                2 4 5 2 2 
+                2 1 1 5 2 
+                2 5 1 5 2 
+                2 4 5 2 2 
+                2 2 5 2 2 
+                . 2 4 2 . 
+                . 2 4 2 . 
+                2 . 2 2 . 
+                2 . 2 . 2 
+                . 2 . 2 . 
+                . 2 2 2 . 
+                . . 2 . . 
+                `,img`
+                . . 2 . . 
+                . 2 2 2 2 
+                2 2 4 2 2 
+                2 2 4 2 2 
+                2 2 5 4 2 
+                2 5 1 1 2 
+                2 5 1 5 2 
+                2 2 5 4 2 
+                2 2 5 2 2 
+                . 2 4 2 . 
+                . 2 4 2 . 
+                . 2 2 . 2 
+                2 . 2 . 2 
+                . 2 . 2 . 
+                . 2 2 2 . 
+                . . 2 . . 
+                `],
+            50,
+            true
+            )
+            magasin += -1
+            mySprite.sayText(magasin, 200, false)
+            music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
+        } else {
+            mySprite.sayText("Press \"B\" to reload", 500, false)
+        }
     }
 })
 function createAsteroid () {
@@ -223,6 +235,7 @@ let speed = 0
 let asteroide: Sprite = null
 let projectile: Sprite = null
 let bigboi: Sprite = null
+let reloading = 0
 let magasin = 0
 let list: number[] = []
 let mySprite: Sprite = null
@@ -255,6 +268,7 @@ mySprite.bottom = 120
 info.setLife(3)
 list = []
 magasin = 20
+reloading = 0
 game.onUpdateInterval(100, function () {
     if (controller.A.isPressed() || controller.B.isPressed()) {
         mySprite.setImage(img`
