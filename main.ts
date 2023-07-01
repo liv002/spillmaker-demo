@@ -65,65 +65,71 @@ function createBigboi () {
     list.push(10)
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    projectile = sprites.createProjectileFromSprite(img`
-        . . 2 . . 
-        2 2 2 2 . 
-        2 2 4 2 2 
-        2 2 4 2 2 
-        2 4 5 2 2 
-        2 1 1 5 2 
-        2 5 1 5 2 
-        2 4 5 2 2 
-        2 2 5 2 2 
-        . 2 4 2 . 
-        . 2 4 2 . 
-        . . 2 2 . 
-        . . 2 . . 
-        . . . . . 
-        . . . . . 
-        . . . . . 
-        `, mySprite, 0, -150)
-    animation.runImageAnimation(
-    projectile,
-    [img`
-        . . 2 . . 
-        2 2 2 2 . 
-        2 2 4 2 2 
-        2 2 4 2 2 
-        2 4 5 2 2 
-        2 1 1 5 2 
-        2 5 1 5 2 
-        2 4 5 2 2 
-        2 2 5 2 2 
-        . 2 4 2 . 
-        . 2 4 2 . 
-        2 . 2 2 . 
-        2 . 2 . 2 
-        . 2 . 2 . 
-        . 2 2 2 . 
-        . . 2 . . 
-        `,img`
-        . . 2 . . 
-        . 2 2 2 2 
-        2 2 4 2 2 
-        2 2 4 2 2 
-        2 2 5 4 2 
-        2 5 1 1 2 
-        2 5 1 5 2 
-        2 2 5 4 2 
-        2 2 5 2 2 
-        . 2 4 2 . 
-        . 2 4 2 . 
-        . 2 2 . 2 
-        2 . 2 . 2 
-        . 2 . 2 . 
-        . 2 2 2 . 
-        . . 2 . . 
-        `],
-    50,
-    true
-    )
-    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
+    if (0 < magasin) {
+        projectile = sprites.createProjectileFromSprite(img`
+            . . 2 . . 
+            2 2 2 2 . 
+            2 2 4 2 2 
+            2 2 4 2 2 
+            2 4 5 2 2 
+            2 1 1 5 2 
+            2 5 1 5 2 
+            2 4 5 2 2 
+            2 2 5 2 2 
+            . 2 4 2 . 
+            . 2 4 2 . 
+            . . 2 2 . 
+            . . 2 . . 
+            . . . . . 
+            . . . . . 
+            . . . . . 
+            `, mySprite, 0, -150)
+        animation.runImageAnimation(
+        projectile,
+        [img`
+            . . 2 . . 
+            2 2 2 2 . 
+            2 2 4 2 2 
+            2 2 4 2 2 
+            2 4 5 2 2 
+            2 1 1 5 2 
+            2 5 1 5 2 
+            2 4 5 2 2 
+            2 2 5 2 2 
+            . 2 4 2 . 
+            . 2 4 2 . 
+            2 . 2 2 . 
+            2 . 2 . 2 
+            . 2 . 2 . 
+            . 2 2 2 . 
+            . . 2 . . 
+            `,img`
+            . . 2 . . 
+            . 2 2 2 2 
+            2 2 4 2 2 
+            2 2 4 2 2 
+            2 2 5 4 2 
+            2 5 1 1 2 
+            2 5 1 5 2 
+            2 2 5 4 2 
+            2 2 5 2 2 
+            . 2 4 2 . 
+            . 2 4 2 . 
+            . 2 2 . 2 
+            2 . 2 . 2 
+            . 2 . 2 . 
+            . 2 2 2 . 
+            . . 2 . . 
+            `],
+        50,
+        true
+        )
+        magasin += -1
+        mySprite.sayText(magasin, 100, false)
+        music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
+    } else {
+        mySprite.sayText("Press the \"B\" button to reload", 500, false)
+    }
 })
 function createAsteroid () {
     asteroide = sprites.create(img`
@@ -217,6 +223,7 @@ let speed = 0
 let asteroide: Sprite = null
 let projectile: Sprite = null
 let bigboi: Sprite = null
+let magasin = 0
 let list: number[] = []
 let mySprite: Sprite = null
 mySprite = sprites.create(img`
@@ -247,7 +254,7 @@ mySprite.setStayInScreen(true)
 mySprite.bottom = 120
 info.setLife(3)
 list = []
-let missedAstroids = 10
+magasin = 20
 game.onUpdateInterval(100, function () {
     if (controller.A.isPressed() || controller.B.isPressed()) {
         mySprite.setImage(img`
@@ -326,9 +333,9 @@ game.onUpdateInterval(100, function () {
     }
 })
 game.onUpdateInterval(500 - game.runtime() / 1000, function () {
-    if (Math.percentChance(0)) {
+    if (Math.percentChance(3)) {
         createBigboi()
-    } else if (Math.percentChance(5)) {
+    } else if (Math.percentChance(1)) {
         spawnLife()
     } else {
         createAsteroid()

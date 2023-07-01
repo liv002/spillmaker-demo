@@ -1,5 +1,5 @@
 {
-    "name": "Spillmaker demo - Bigboi ver",
+    "name": "Spillmaker demo",
     "version": "0.0.1",
     "description": "",
     "dependencies": {
@@ -18,7 +18,7 @@
         "branch": "v1.12.30",
         "tag": "v1.12.30",
         "commits": "https://github.com/microsoft/pxt-arcade/commits/33228b1cc7e1bea3f728c26a6047bdef35fd2c09",
-        "target": "1.12.30",
+        "target": "1.12.32",
         "pxt": "8.5.41",
         "targetId": "arcade"
     },
